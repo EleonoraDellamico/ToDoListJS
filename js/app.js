@@ -6,13 +6,17 @@ const list = document.getElementById('list');
 const input = document.getElementById('input');
 
 //2 step, classes name
-const CHECK = ' fa-check-circle';
-const UNCHECK = ' fa-circle-thin';
+const CHECK = 'fa-check-circle';
+const UNCHECK = 'fa-circle-thin';
 const LINE_THROUGH = 'lineThrough';
 
 //Variable
 let LIST = [];
 let id = 0;
+
+//Get item from localStorage
+
+//Add item to locla storage
 
 // Show today days
 const today = new Date();
@@ -51,5 +55,29 @@ document.addEventListener('keyup', function(event) {
 			id++;
 		}
 		input.value = '';
+	}
+});
+// complete to do
+function completeToDo(element) {
+	element.classList.toggle(CHECK);
+	element.classList.toggle(UNCHECK);
+	element.parentNode.querySelector('.text').classList.toggle(LINE_THROUGH);
+
+	LIST[element.id].done = LIST[element.id].done ? false : true;
+}
+//Remove from the list
+function removeToDo(element) {
+	element.parentNode.parentNode.removeChild(element.parentNode);
+	LIST[element.id].trash = true;
+}
+//Target the items created dynamically
+
+list.addEventListener('click', function(event) {
+	const element = event.target; //return the clicked element inside the list
+	const elementJob = element.attributes.job.value; // complete or deleted
+	if (elementJob == 'complete') {
+		completeToDo(element);
+	} else if (elementJob == 'delete') {
+		removeToDo(element);
 	}
 });
