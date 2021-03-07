@@ -15,8 +15,28 @@ let LIST = [];
 let id = 0;
 
 //Get item from localStorage
-
-//Add item to locla storage
+let data = localStorage.getItem('TODO');
+//Check if data is not empty
+if (data) {
+	LIST = JSON.parse(data);
+	id = LIST.length; //set the id to the last one in the list
+	loadList(LIST);
+} else {
+	//if data isn't empty
+	LIST = [];
+	id = 0;
+}
+//load the items to the user's interface
+function loadList(array) {
+	array.forEach(function(item) {
+		addToDo(item.name, item.id, item.done, item.trash);
+	});
+}
+//clear the loclaStorage
+clear.addEventListener('click', function() {
+	localStorage.clear();
+	location.reload();
+});
 
 // Show today days
 const today = new Date();
@@ -52,6 +72,8 @@ document.addEventListener('keyup', function(event) {
 				done: false,
 				trash: false
 			});
+			//Add item to locla storage (This code must be added where the LIST array is updated)
+			localStorage.setItem('TODO', JSON.stringify(LIST));
 			id++;
 		}
 		input.value = '';
@@ -80,4 +102,6 @@ list.addEventListener('click', function(event) {
 	} else if (elementJob == 'delete') {
 		removeToDo(element);
 	}
+	//Add item to locla storage (This code must be added where the LIST array is updated)
+	localStorage.setItem('TODO', JSON.stringify(LIST));
 });
